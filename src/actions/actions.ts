@@ -3,6 +3,7 @@
 import prisma from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createPost(formData: FormData) {
   try {
@@ -33,9 +34,11 @@ export async function createPost(formData: FormData) {
   revalidatePath("/posts");
 }
 
-export async function updatePost(formData: FormData, id: string) {
+export async function updatePost(formData: FormData) {
   await prisma.post.update({
-    where: { id },
+    where: {
+      id: formData.get("itemId") as string,
+    },
     data: {
       title: formData.get("title") as string,
       slug: (formData.get("title") as string)
@@ -44,8 +47,15 @@ export async function updatePost(formData: FormData, id: string) {
       content: formData.get("content") as string,
     },
   });
+
+  redirect("/posts")
 }
 
-export async function deletePost(id: string) {
-  await prisma.post.delete({ where: { id } });
+export async function deletePost(formData: FormData) {
+  await prisma.post.delete({
+    where: {
+      id: formData.get("itemId") as string,
+    },
+  });
+  revalidatePath("/posts");
 }

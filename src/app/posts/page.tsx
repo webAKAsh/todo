@@ -1,4 +1,4 @@
-import { createPost } from "@/actions/actions";
+import { createPost, deletePost } from "@/actions/actions";
 import prisma from "@/lib/db";
 import Link from "next/link";
 
@@ -21,16 +21,34 @@ export default async function PostsPage() {
         </h1>
         <ul className="border-t border-b border-white py-5 leading-8">
           {user?.posts.map((post) => (
-            <li
+            <Link
+              href={`/posts/${post.slug}`}
               key={post.id}
-              className="flex items-center justify-between px-5"
+              className="flex items-center justify-between px-5 mb-5 gap-x-4 border border-white rounded-md py-3"
             >
-              <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-            </li>
+              <h1 className="text-white text-lg">{post.title}</h1>
+              <form action={deletePost}>
+                <input
+                  name="itemId"
+                  className="hidden"
+                  value={post.id}
+                  readOnly
+                />
+                <button
+                  className="bg-white text-black rounded-md py-1 px-4"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              </form>
+            </Link>
           ))}
         </ul>
       </div>
-      <form action={createPost} className="flex flex-col gap-y-2 w-[300px] border py-2 px-4 border-white rounded">
+      <form
+        action={createPost}
+        className="flex flex-col gap-y-2 w-[300px] border py-2 px-4 border-white rounded"
+      >
         <h1 className="text-2xl">Add Your tasks</h1>
         <input
           name="title"
