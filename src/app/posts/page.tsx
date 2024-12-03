@@ -14,18 +14,24 @@ export default async function PostsPage() {
   });
 
   return (
-    <main className="flex flex-col items-center gap-y-5 pt-24 text-center">
-      <h1 className="text-3xl font-semibold">
-        All Post ({user?.posts.length})
-      </h1>
-      <ul className="border-t border-b border-white py-5 leading-8">
-        {user?.posts.map((post) => (
-          <li key={post.id} className="flex items-center justify-between px-5">
-            <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-          </li>
-        ))}
-      </ul>
-      <form action={createPost} className="flex flex-col gap-y-2 w-[300px]">
+    <main className="flex items-center justify-around pt-24 text-center">
+      <div className="flex flex-col items-center justify-center gap-y-5">
+        <h1 className="text-3xl font-semibold">
+          All Post ({user?.posts.length})
+        </h1>
+        <ul className="border-t border-b border-white py-5 leading-8">
+          {user?.posts.map((post) => (
+            <li
+              key={post.id}
+              className="flex items-center justify-between px-5"
+            >
+              <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <form action={createPost} className="flex flex-col gap-y-2 w-[300px] border py-2 px-4 border-white rounded">
+        <h1 className="text-2xl">Add Your tasks</h1>
         <input
           name="title"
           type="text"
